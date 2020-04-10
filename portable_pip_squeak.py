@@ -26,16 +26,8 @@ try:
 except:
     from ConfigParser import SafeConfigParser
 
-#---- set up some parameters 
-
-# config file
-configfile = 'config.CSN'
-
-# seconds to make amplitude measurement following stalta trig in count_peaks_stalta_new 
-twin = 4.0 
-
-# minimum time (sec) bw peaks in count_triggers_FinDer 
-TbwPeaksFD = 30. 
+#---- set up parameters from the config file
+configfile = 'config.portable_pip_sqeak'
 
 #----- command-line arguments specify what data to get and where
 #      Note: plotting can slow it down so be careful.
@@ -86,7 +78,6 @@ def raw_trace_to_ground_motion_filtered(TraceOrig,AccVelDisp,f1,f2):
 parser = SafeConfigParser()
 parser.read(configfile)
 
-tpadding = float(parser.get('SectionOne','tpadding'))
 sta = float(parser.get('SectionOne','sta'))
 lta = float(parser.get('SectionOne','lta'))
 tbuffer = sta + lta
@@ -97,6 +88,8 @@ mpd = float(parser.get('SectionOne','mpd'))
 minSTALTAlen = float(parser.get('SectionOne','minSTALTAlen'))
 RMSlen = float(parser.get('SectionOne','RMSlen'))
 FDSNtimeout = float(parser.get('SectionOne','FDSNtimeout'))
+twin = float(parser.get('SectionOne','twin'))
+TbwPeaksFD = float(parser.get('SectionOne','TbwPeaksFD'))
 
 #---- If infile exists, go through the lines of sac/mseed files and combine
 #        into one stream.  If a Net Stat Chantype given, go download data.

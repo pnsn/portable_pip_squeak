@@ -3,9 +3,6 @@
 #  Set the timeout (sec) for the FDSNWS client.  Less than 5sec is fine for IRIS.  SCEDC might need more time.
 FDSNtimeout: 10
 
-#  Padding length (sec) on both sides of the trace to avoid edge effects when filtering. Should be > (2/freqBB2).
-tpadding: 120
-
 #  Lenths (sec) of the Short Term Average and Long Term Average.
 sta: 0.05
 lta: 5.0
@@ -26,9 +23,9 @@ mpd: 10.0
 #  Length of the running RMS windowing function (sec) used for the RMS noise duration metric.
 RMSlen: 5.0
 
-#  Either use just the "Gain" or the full "Resp" (response) file for instrument response removal.
-GainOrFullResp: "Gain"
+# seconds to make amplitude measurement following stalta trig in count_peaks_stalta_new 
+twin = 4.0 
 
-#  Duration of measurements by sniffwave_tally in (integer) seconds.
-sniffwave_tally_duration: 600
+# minimum time (sec) bw peaks in count_triggers_FinDer 
+TbwPeaksFD = 30. 
 
