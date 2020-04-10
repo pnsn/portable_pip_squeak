@@ -14,7 +14,7 @@ import numpy as np
 import datetime
 import timeit
 from noise_metrics import *
-from parse_and_validate_args import validate_args_and_get_times, parse_args
+from parse_and_validate_args_portable import validate_args_and_get_times, parse_args
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -120,7 +120,10 @@ else:
         channels =  chantype + "*" 
         t1 = UTCDateTime(starttime)
         t2 = UTCDateTime(endtime)
-        st = client.get_waveforms(network,station,"*",channels,t1,t2,longestonly=True)
+        if ( datacenter == "IRIS" ):
+            st = client.get_waveforms(network,station,"*",channels,t1,t2,longestonly=True)
+        else:
+            st = client.get_waveforms(network,station,"*",channels,t1,t2)  #--longestonly not supported
         if ( len(st) < 3 ):
             print("Error:  Not all channels are available during this period " + st)
         inv = client.get_stations(network=network, station=station, channel=channels, starttime=t1, endtime=t2, level='response')
