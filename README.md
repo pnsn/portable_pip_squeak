@@ -22,7 +22,7 @@ These can easily be added via command line using <a href="https://www.anaconda.c
 
 - *portable_pip_squeak.py*               This is the main ObsPy based python script.
 - *config.portable_pip_sqeak*            Parameters are stored in here, defaulted to decent values for PNSN's purposes.
-- *parse_and_validate_args_portable.py*  Just a bunch of validating that the input arguments are kosher.
+- *parse_and_validate_args_portable.py*  Just a bunch of validation of the input arguments.
 
 # Speed
 
@@ -40,13 +40,13 @@ Download 1 hours of data from an existing station NC.LMC from a datacenter other
 >> ./portable_pip_squeak.py -N NC -S LMC -C HN -s 2020-04-04T22:00:00 -d 1 -dc NCEDC -p
 ``` 
 
-Use already existing .SAC files.  Needs 3 SAC files of equal npts as well as gain factor/Stage 0 sensitivity:
+Use already existing .SAC files.  Needs 3 SAC files of equal length as well as gain factor/Stage 0 sensitivity:
 ```
 >> ls MySACfile_Z.SAC MySACfile_N.SAC MySACfile_E.SAC > MyInfile.txt 
 >> ./portable_pip_squeak.py -i MyInfile.txt -g 0.102
 ``` 
 
-Use already existing .mseed file(s).  Needs 3 components of equal npts as either one or three .mseed files as well as gain factor/Stage 0 sensitivity; also make a plot:
+Use already existing .mseed file(s).  Needs 3 traces (usualy Z, N, E) of equal length as either one or three .mseed files as well as gain factor/Stage 0 sensitivity; also make a plot:
 ```
 >> ls My_UW_portable_BB.mseed > MyInfile.txt 
 >> ./portable_pip_squeak.py -i MyInfile.txt -g 9.77e8 -p
@@ -55,10 +55,14 @@ Use already existing .mseed file(s).  Needs 3 components of equal npts as either
 # Output columns
 
 - *NoiseFloor*  To approximate the median envelope amplitude quickly, half range of the 2nd to 
-    98th percentile amplitudes are used using Acceleration.
-- *SAspikes*    This is the same as the eew_stationreport "Spikes" metric and threshold.
-- *SArms*       This is the same as the eew_stationreport "RMS" metric and threshold.
+    98th percentile amplitudes are used using acceleration. <a href="https://github.com/pnsn/station_metrics/tree/master/station_metrics/metrics#noise-floor">details</a>
+- *SAspikes*    This is the same as the <a href="https://github.com/pnsn/station_metrics/tree/master/station_metrics/metrics">eew_stationreport</a> "Spikes" metric and threshold. <a href="https://github.com/pnsn/station_metrics/tree/master/station_metrics/metrics#metrics-counting-spikestriggers">details</a>
+- *SArms*       This is the same as the <a href="https://github.com/pnsn/station_metrics/tree/master/station_metrics/metrics">eew_stationreport</a> "RMS" metric and threshold. <a href="https://github.com/pnsn/station_metrics/tree/master/station_metrics/metrics#rms-noise">details</a>
 - *Big spikes*  This uses occurrences of amplitudes greater than 1 or 2 cm/s^2, which is enough for a human to feel, to mimic how problematic the station would be in the ShakeAlert FinDer algorithm.
+
+<a href="https://github.com/pnsn/station_metrics/tree/master/station_metrics/metrics">eew_stationreport</a>
+<a href="https://github.com/pnsn/station_metrics#eew_stationreport-for-one-off-shakealert-station-assessment">obspy</a>
+
 
 *Frequencies* A lot of spikes occur only at high frequencies that can be ignored for some earthquake applications, possibly ShakeAlert in the future.  All of the above measures are calculated twice.  Once using the current filtering in the ShakeAlert EPIC waveform processor, a highpass at 0.075 Hz, and again using a bandpass filter of 0.075 - 15 Hz.  The *Spikes at only high freq* is based on the ratio of *SAspikes* using the highpass to *SAspikes* using the bandpass.
 
