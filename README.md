@@ -101,3 +101,10 @@ With high frequencies:     Quiet 	 Pass 	 	 Pass 	 None
 Spikes only at high freq:  No
 Good for:  3 channel site-  Yes   4 channel site-  Yes   6 channel site-  Yes
 ```
+
+# Output plots:
+Adding -p will spit out these type plots which show highpass filtered acceleration data along with colored lines demarking threshold amplitudes.  These plots are limited to at most 1.5 hours, so if the input duration or files are 4 hours long, only a time window of 1.5 hours in the center of the analyzed seismograms will be plotted.
+
+<img src="https://github.com/pnsn/portable_pip_squeak/blob/master/station_report.UW.PIER.png" width=600 alt="Metric: Noise Floor" />
+
+<img src="https://github.com/pnsn/portable_pip_squeak/blob/master/station_report.UW.ALKI.png" width=400 alt="Metric: Noise Floor" />
