@@ -1,5 +1,5 @@
 # portable_pip_squeak
-Light weight station quality assessment tool to tell if site is good for 3,4, or 6 channel site
+Light weight station quality assessment tool to tell if site is appropriate for a 3,4, or 6 channel station.
 
 # Overview
 
@@ -12,7 +12,8 @@ Built for python 3 with the following major package dependencies:
 
 These can easily be added via command line using <a href="https://www.anaconda.com/">Anaconda</a>.  It is recommended you not use your system python, rather use a virtual environment.
 
-```>> conda create -n pps python=3.7
+```
+>> conda create -n pps
 >> conda activate pps
 >> conda install -c anaconda numpy
 >> conda install -c conda-forge matplotlib
@@ -52,6 +53,20 @@ Use already existing .mseed file(s).  Needs 3 traces (usualy Z, N, E) of equal l
 >> ./portable_pip_squeak.py -i MyInfile.txt -g 9.77e8 -p
 ``` 
 
+# Simple shell script to run assessment on a bunch of stations.
+
+```
+#!/bin/sh
+
+./portable_pip_squeak.py -N UW -S TKEY -C HH -s 2020-04-04T22:00:00 -d 2.5
+./portable_pip_squeak.py -N UW -S TKEY -C EN -s 2020-04-04T22:00:00 -d 2.5
+./portable_pip_squeak.py -N UW -S ALKI -C HN -s 2020-04-04T22:00:00 -d 2.5
+./portable_pip_squeak.py -N UW -S PIER -C HN -s 2020-04-04T22:00:00 -d 2.5
+```
+- Make sure you make the script executable via:  chmod +x myshellscript.sh
+- Execute it, dump the output into a text file, and put it in the background so you can log off and see results tomorrow:
+nohup ./myshellscript.sh & > myoutpout.txt
+
 # Output columns
 
 - *NoiseFloor*  To approximate the median envelope amplitude quickly, half range of the 2nd to 
@@ -59,10 +74,6 @@ Use already existing .mseed file(s).  Needs 3 traces (usualy Z, N, E) of equal l
 - *SAspikes*    This is the same as the <a href="https://github.com/pnsn/station_metrics/tree/master/station_metrics/metrics">eew_stationreport</a> "Spikes" metric and threshold. <a href="https://github.com/pnsn/station_metrics/tree/master/station_metrics/metrics#metrics-counting-spikestriggers">details</a>
 - *SArms*       This is the same as the <a href="https://github.com/pnsn/station_metrics/tree/master/station_metrics/metrics">eew_stationreport</a> "RMS" metric and threshold. <a href="https://github.com/pnsn/station_metrics/tree/master/station_metrics/metrics#rms-noise">details</a>
 - *Big spikes*  This uses occurrences of amplitudes greater than 1 or 2 cm/s^2, which is enough for a human to feel, to mimic how problematic the station would be in the ShakeAlert FinDer algorithm.
-
-<a href="https://github.com/pnsn/station_metrics/tree/master/station_metrics/metrics">eew_stationreport</a>
-<a href="https://github.com/pnsn/station_metrics#eew_stationreport-for-one-off-shakealert-station-assessment">obspy</a>
-
 
 *Frequencies* A lot of spikes occur only at high frequencies that can be ignored for some earthquake applications, possibly ShakeAlert in the future.  All of the above measures are calculated twice.  Once using the current filtering in the ShakeAlert EPIC waveform processor, a highpass at 0.075 Hz, and again using a bandpass filter of 0.075 - 15 Hz.  The *Spikes at only high freq* is based on the ratio of *SAspikes* using the highpass to *SAspikes* using the bandpass.
 
