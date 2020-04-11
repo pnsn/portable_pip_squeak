@@ -58,9 +58,11 @@ Use already existing .mseed file(s).  Needs 3 components of equal npts as either
     98th percentile amplitudes are used using Acceleration.
 - *SAspikes*    This is the same as the eew_stationreport "Spikes" metric and threshold.
 - *SArms*       This is the same as the eew_stationreport "RMS" metric and threshold.
-- *Big spikes"  Talk about FinDe.
-high freq
-good for 3/4/5
+- *Big spikes*  This uses occurrences of amplitudes greater than 1 or 2 cm/s^2, which is enough for a human to feel, to mimic how problematic the station would be in the ShakeAlert FinDer algorithm.
+
+*Frequencies* A lot of spikes occur only at high frequencies that can be ignored for some earthquake applications, possibly ShakeAlert in the future.  All of the above measures are calculated twice.  Once using the current filtering in the ShakeAlert EPIC waveform processor, a highpass at 0.075 Hz, and again using a bandpass filter of 0.075 - 15 Hz.  The *Spikes at only high freq* is based on the ratio of *SAspikes* using the highpass to *SAspikes* using the bandpass.
+
+*Good for:  3/4/6 channel site*  These are subjective (and likely to be updated) guidelines for what type of station a site might be good for using a combination of *Big Spikes* and the noise floor for the 3 and 4 channel assessment.  The 6 channel assessment additionaly considers *SAspikes* and *SArms*.
 
 ```
 ./portable_pip_squeak.py -N UW -S PIER -C HN -s 2020-04-04T22:00:00 -d 1 -dc IRIS -p
