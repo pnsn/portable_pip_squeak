@@ -101,7 +101,6 @@ if ( infile is not None ):
         firstline = True
         for line in lines:
             if ( firstline == True ):
-                st = read('/home/ahutko/TEMP/NICHOLAS_TEMP_TEST/KOPA/kopa/KOPA/UW.KOPA..HHE.D.2020.057.232452.SAC')
                 st = read(line)
                 firstline = False
             else:
